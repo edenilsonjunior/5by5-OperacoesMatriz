@@ -1,135 +1,168 @@
 ﻿/*
     Faça um programa que execute as 4 operações básicas entre duas matrizes e armazene em uma nova matriz
+
+    **UPDATE**
+    Implemente no programa as seguintes funcoes:
+    A) Menu de selecao que retorna a operacao escolhida pelo usuario
+    B) Funcao que popula a matriz atraves de sorteio
+    C) Funcao que vai informar o tamanho da criacao da minha matriz(passar dois parametros int, linha e coluna)
+ 
  */
 
-Console.WriteLine("=====Manipulando Matrizes=====");
-
-int qntlinhas = 5;
-int qntColunas = 5;
-Random random = new Random();
-
-int[,] matriz1 = new int[qntlinhas, qntColunas];
-int[,] matriz2 = new int[qntlinhas, qntColunas];
-int[,] resultado = new int[qntlinhas, qntColunas];
-
-
-// Criacao das matrizes 1 e 2
-for (int l = 0; l < qntlinhas; l++)
+/*Funcoes*/
+void popularMatriz(float[,] matriz, int sizeLinhas, int sizeColunas)
 {
-    for (int c = 0; c < qntColunas; c++)
+    Random random = new Random();
+
+    for(int linha = 0; linha < sizeLinhas; linha++)
     {
-        matriz1[l, c] = random.Next(1, 10);
-        matriz2[l, c] = random.Next(1, 10);
+        for(int coluna = 0; coluna < sizeColunas; coluna++)
+        {
+            matriz[linha, coluna] = random.Next(1, 10);
+        }
     }
 }
 
-Console.WriteLine("Matriz 1:");
-for (int l = 0; l < qntlinhas; l++)
+
+void ImprimirMatriz(float[,] matriz, string titulo, int linhas, int colunas)
 {
-    for (int c = 0; c < qntColunas; c++)
+    ImprimirLinha();
+    Console.WriteLine(titulo);
+    for (int l = 0; l < linhas; l++)
     {
-        Console.Write($"{matriz1[l, c]} ");
-    }
-    Console.WriteLine();
-}
-Console.WriteLine("=============================");
-
-
-Console.WriteLine("Matriz 2:");
-for (int l = 0; l < qntlinhas; l++)
-{
-    for (int c = 0; c < qntColunas; c++)
-    {
-        Console.Write($"{matriz2[l, c]} ");
-    }
-    Console.WriteLine();
-}
-Console.WriteLine("=============================");
-
-
-// Soma das matrizes
-for (int l = 0; l < qntlinhas; l++)
-{
-    for (int c = 0; c < qntColunas; c++)
-    {
-        resultado[l, c] = matriz1[l, c] + matriz2[l, c];
+        for (int c = 0; c < colunas; c++)
+        {
+            Console.Write($"{matriz[l, c]} ");
+        }
+        Console.WriteLine();
     }
 }
 
-Console.WriteLine("Soma:");
-for (int l = 0; l < qntlinhas; l++)
-{
-    for (int c = 0; c < qntColunas; c++)
-    {
-        Console.Write($"{resultado[l, c]} ");
-    }
-    Console.WriteLine();
-}
-Console.WriteLine("=============================");
+int Menu() {
 
-
-// subtracao das matrizes
-for (int l = 0; l < qntlinhas; l++)
-{
-    for (int c = 0; c < qntColunas; c++)
+    int operacao;
+    do
     {
-        resultado[l, c] = matriz1[l, c] - matriz2[l, c];
-    }
+        Console.WriteLine("Digite o numero da operacao");
+        Console.WriteLine("1- Adição");
+        Console.WriteLine("2- Subtracao");
+        Console.WriteLine("3- Multiplicacao");
+        Console.WriteLine("4- Divisão");
+        Console.WriteLine("5- Sair");
+        Console.Write("Digite sua escolha: ");
+        operacao = int.Parse(Console.ReadLine());
+
+    } while (operacao < 0 || operacao > 4);
+
+    return operacao;
 }
 
-Console.WriteLine("Subtração:");
-for (int l = 0; l < qntlinhas; l++)
+void Operacoes(float[,] matriz1, float[,] matriz2, int linhas, int colunas, int escolha)
 {
-    for (int c = 0; c < qntColunas; c++)
+    float[,] resultado = new float[linhas, colunas];
+
+    for (int l = 0; l < linhas; l++)
     {
-        Console.Write($"{resultado[l, c]} ");
+        for (int c = 0; c < colunas; c++)
+        {
+            switch (escolha)
+            {
+                case 1:
+                    resultado[l, c] = matriz1[l, c] + matriz2[l, c];
+                    break;
+                case 2:
+                    resultado[l, c] = matriz1[l, c] - matriz2[l, c];
+                    break;
+                case 3:
+                    resultado[l, c] = matriz1[l, c] * matriz2[l, c];
+                    break;
+                case 4:
+                    if (matriz2[l, c] != 0)
+                        resultado[l, c] = matriz1[l, c] / matriz2[l, c];
+                    else
+                        resultado[l, c] = float.NaN;
+                    break;
+                default:
+                    Console.WriteLine("Operação inválida");
+                    break;
+            }
+        }
     }
-    Console.WriteLine();
+
+    string titulo = "";
+    switch (escolha)
+    {
+        case 1:
+            titulo = "Adição";
+            break;
+        case 2:
+            titulo = "Subtração";
+            break;
+        case 3:
+            titulo = "Multiplicação";
+            break;
+        case 4:
+            titulo = "Divisão";
+            break;
+        default:
+            Console.WriteLine("Valor inválido");
+            break;
+    }
+
+    ImprimirMatriz(resultado, titulo, linhas, colunas);
 }
-Console.WriteLine("=============================");
 
-
-// multiplicacao das matrizes
-for (int l = 0; l < qntlinhas; l++)
+int LerInt(string titulo)
 {
-    for (int c = 0; c < qntColunas; c++)
-    {
-        resultado[l, c] = matriz1[l, c] * matriz2[l, c];
-    }
+    Console.Write(titulo);
+    return int.Parse(Console.ReadLine());
 }
 
-Console.WriteLine("Multiplicação:");
-for (int l = 0; l < qntlinhas; l++)
+void ImprimirLinha()
 {
-    for (int c = 0; c < qntColunas; c++)
-    {
-        Console.Write($"{resultado[l, c]} ");
-    }
-    Console.WriteLine();
+    Console.WriteLine("=============================");
 }
-Console.WriteLine("=============================");
 
-
-// divisao das matrizes
-for (int l = 0; l < qntlinhas; l++)
+float[,] InstanciarMatriz(int linhas, int colunas)
 {
-    for (int c = 0; c < qntColunas; c++)
-    {
-        resultado[l, c] = matriz1[l, c] / matriz2[l, c];
-    }
+    return new float[linhas, colunas];    
 }
 
-Console.WriteLine("Divisão:");
-for (int l = 0; l < qntlinhas; l++)
+/*----------Main----------*/
+
+int escolha, linhas, colunas;
+
+do
 {
-    for (int c = 0; c < qntColunas; c++)
+    Console.Clear();
+    Console.WriteLine("=====Manipulando Matrizes=====");
+
+    do
     {
-        Console.Write($"{resultado[l, c]} ");
+        linhas = LerInt("Digite o numero de linhas: ");
+        colunas = LerInt("Digite o numero de colunas: ");
+
+        if(linhas != colunas) Console.WriteLine("Os numeros nao podem ser diferentes!");
+
+    } while (linhas <= 0 && colunas <= 0 || linhas != colunas);
+
+    float[,] matriz1 = InstanciarMatriz(linhas, colunas);
+    float[,] matriz2 = InstanciarMatriz(linhas, colunas);
+
+    popularMatriz(matriz1, linhas, colunas);
+    popularMatriz(matriz2, linhas, colunas);
+
+    ImprimirMatriz(matriz1, "Matriz 1:", linhas, colunas);
+    ImprimirMatriz(matriz2, "Matriz 2:", linhas, colunas);
+
+    ImprimirLinha();
+    escolha = Menu();
+
+    if (escolha != 0)
+    {
+        Operacoes(matriz1, matriz2, linhas, colunas, escolha);
+        Console.WriteLine("\nDigite qualquer tecla para continuar...");
+        Console.ReadKey();
     }
-    Console.WriteLine();
-}
-Console.WriteLine("=============================");
 
-
-Console.Write("\nDigite qualquer tecla para sair: ");
-Console.ReadKey();
+} while (escolha != 0);
