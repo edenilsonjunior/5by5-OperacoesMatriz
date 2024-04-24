@@ -43,6 +43,7 @@ int Menu() {
     int operacao;
     do
     {
+        ImprimirLinha();
         Console.WriteLine("Digite o numero da operacao");
         Console.WriteLine("1- Adição");
         Console.WriteLine("2- Subtracao");
@@ -129,7 +130,6 @@ float[,] InstanciarMatriz(int linhas, int colunas)
 }
 
 /*----------Main----------*/
-
 int escolha, linhas, colunas;
 
 do
@@ -142,7 +142,10 @@ do
         linhas = LerInt("Digite o numero de linhas: ");
         colunas = LerInt("Digite o numero de colunas: ");
 
-        if(linhas != colunas) Console.WriteLine("Os numeros nao podem ser diferentes!");
+        if(linhas != colunas) 
+            Console.WriteLine("Os numeros nao podem ser diferentes!");
+        else if(linhas == 0 || colunas == 0)
+            Console.WriteLine("Nao podem existir valores negativos!");
 
     } while (linhas <= 0 && colunas <= 0 || linhas != colunas);
 
@@ -150,12 +153,11 @@ do
     float[,] matriz2 = InstanciarMatriz(linhas, colunas);
 
     popularMatriz(matriz1, linhas, colunas);
-    popularMatriz(matriz2, linhas, colunas);
-
     ImprimirMatriz(matriz1, "Matriz 1:", linhas, colunas);
+
+    popularMatriz(matriz2, linhas, colunas);
     ImprimirMatriz(matriz2, "Matriz 2:", linhas, colunas);
 
-    ImprimirLinha();
     escolha = Menu();
 
     if (escolha != 0)
