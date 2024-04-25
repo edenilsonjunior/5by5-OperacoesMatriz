@@ -6,165 +6,160 @@
     A) Menu de selecao que retorna a operacao escolhida pelo usuario
     B) Funcao que popula a matriz atraves de sorteio
     C) Funcao que vai informar o tamanho da criacao da minha matriz(passar dois parametros int, linha e coluna)
- 
  */
 
-/*Funcoes*/
-void popularMatriz(float[,] matriz, int sizeLinhas, int sizeColunas)
-{
-    Random random = new Random();
+/*Functions*/
 
-    for(int linha = 0; linha < sizeLinhas; linha++)
+int Menu()
+{
+    int option;
+    do
     {
-        for(int coluna = 0; coluna < sizeColunas; coluna++)
+        PrintLine();
+        Console.WriteLine("Enter your operation option");
+        Console.WriteLine("1- Addition");
+        Console.WriteLine("2- Subtraction");
+        Console.WriteLine("3- Multiplication");
+        Console.WriteLine("4- Division");
+        Console.WriteLine("5- Exit");
+        Console.Write("Your choice: ");
+        option = int.Parse(Console.ReadLine());
+
+    } while (option < 0 || option > 4);
+
+    return option;
+}
+
+void SortMatrix(float[,] matrix, int lines, int columns)
+{
+    Random random = new();
+
+    for(int l = 0; l < lines; l++)
+    {
+        for(int c = 0; c < columns; c++)
         {
-            matriz[linha, coluna] = random.Next(1, 10);
+            matrix[l, c] = random.Next(1, 10);
         }
     }
 }
 
-
-void ImprimirMatriz(float[,] matriz, string titulo, int linhas, int colunas)
+void PrintMatrix(float[,] matrix, string title, int lines, int columns)
 {
-    ImprimirLinha();
-    Console.WriteLine(titulo);
-    for (int l = 0; l < linhas; l++)
+    PrintLine();
+    Console.WriteLine(title);
+    for (int l = 0; l < lines; l++)
     {
-        for (int c = 0; c < colunas; c++)
+        for (int c = 0; c < columns; c++)
         {
-            Console.Write($"{matriz[l, c]} ");
+            Console.Write($"{matrix[l, c]} ");
         }
         Console.WriteLine();
     }
 }
 
-int Menu() {
-
-    int operacao;
-    do
-    {
-        ImprimirLinha();
-        Console.WriteLine("Digite o numero da operacao");
-        Console.WriteLine("1- Adição");
-        Console.WriteLine("2- Subtracao");
-        Console.WriteLine("3- Multiplicacao");
-        Console.WriteLine("4- Divisão");
-        Console.WriteLine("5- Sair");
-        Console.Write("Digite sua escolha: ");
-        operacao = int.Parse(Console.ReadLine());
-
-    } while (operacao < 0 || operacao > 4);
-
-    return operacao;
-}
-
-void Operacoes(float[,] matriz1, float[,] matriz2, int linhas, int colunas, int escolha)
+void DoOperations(float[,] m1, float[,] m2, int lines, int columns, int option)
 {
-    float[,] resultado = new float[linhas, colunas];
+    float[,] result = CreateMatrix(lines, columns);
 
-    for (int l = 0; l < linhas; l++)
+    for (int l = 0; l < lines; l++)
     {
-        for (int c = 0; c < colunas; c++)
+        for (int c = 0; c < columns; c++)
         {
-            switch (escolha)
+            switch (option)
             {
                 case 1:
-                    resultado[l, c] = matriz1[l, c] + matriz2[l, c];
-                    break;
+                    result[l, c] = m1[l, c] + m2[l, c];
+                break;
                 case 2:
-                    resultado[l, c] = matriz1[l, c] - matriz2[l, c];
+                    result[l, c] = m1[l, c] - m2[l, c];
                     break;
                 case 3:
-                    resultado[l, c] = matriz1[l, c] * matriz2[l, c];
+                    result[l, c] = m1[l, c] * m2[l, c];
                     break;
                 case 4:
-                    if (matriz2[l, c] != 0)
-                        resultado[l, c] = matriz1[l, c] / matriz2[l, c];
+                    if (m2[l, c] != 0)
+                        result[l, c] = m1[l, c] / m2[l, c];
                     else
-                        resultado[l, c] = float.NaN;
+                        result[l, c] = float.NaN;
                     break;
                 default:
-                    Console.WriteLine("Operação inválida");
+                    Console.WriteLine("Invalid operation");
                     break;
             }
         }
     }
 
-    string titulo = "";
-    switch (escolha)
+    string title = "";
+    switch (option)
     {
         case 1:
-            titulo = "Adição";
+            title = "Addition";
             break;
         case 2:
-            titulo = "Subtração";
+            title = "Subtraction";
             break;
         case 3:
-            titulo = "Multiplicação";
+            title = "Multiplication";
             break;
         case 4:
-            titulo = "Divisão";
+            title = "Division";
             break;
         default:
-            Console.WriteLine("Valor inválido");
+            Console.WriteLine("Invalid operation");
             break;
     }
 
-    ImprimirMatriz(resultado, titulo, linhas, colunas);
+    PrintMatrix(result, title, lines, columns);
 }
 
-int LerInt(string titulo)
+int ReadInt(string title)
 {
-    Console.Write(titulo);
+    Console.Write(title);
     return int.Parse(Console.ReadLine());
 }
 
-void ImprimirLinha()
+void PrintLine()
 {
     Console.WriteLine("=============================");
 }
 
-float[,] InstanciarMatriz(int linhas, int colunas)
+float[,] CreateMatrix(int linhas, int colunas)
 {
     return new float[linhas, colunas];    
 }
 
 /*----------Main----------*/
-int escolha, linhas, colunas;
+int option, lines, columns;
 
 do
 {
     Console.Clear();
-    Console.WriteLine("=====Manipulando Matrizes=====");
+    Console.WriteLine("=====Manipulating Matrixes=====");
 
     do
     {
-        linhas = LerInt("Digite o numero de linhas: ");
-        colunas = LerInt("Digite o numero de colunas: ");
+        PrintLine();
+        lines = ReadInt("Enter line size: ");
+        columns = ReadInt("Enter columns size: ");
 
-        if(linhas != colunas) 
-            Console.WriteLine("Os numeros nao podem ser diferentes!");
-        else if(linhas == 0 || colunas == 0)
-            Console.WriteLine("Nao podem existir valores negativos!");
+    } while (lines <= 0 && columns <= 0 || lines != columns);
 
-    } while (linhas <= 0 && colunas <= 0 || linhas != colunas);
+    float[,] matrix1 = CreateMatrix(lines, columns);
+    float[,] matrix2 = CreateMatrix(lines, columns);
 
-    float[,] matriz1 = InstanciarMatriz(linhas, colunas);
-    float[,] matriz2 = InstanciarMatriz(linhas, colunas);
+    SortMatrix(matrix1, lines, columns);
+    PrintMatrix(matrix1, "Matrix 1:", lines, columns);
 
-    popularMatriz(matriz1, linhas, colunas);
-    ImprimirMatriz(matriz1, "Matriz 1:", linhas, colunas);
+    SortMatrix(matrix2, lines, columns);
+    PrintMatrix(matrix2, "Matrix 2:", lines, columns);
 
-    popularMatriz(matriz2, linhas, colunas);
-    ImprimirMatriz(matriz2, "Matriz 2:", linhas, colunas);
+    option = Menu();
 
-    escolha = Menu();
-
-    if (escolha != 0)
+    if (option != 0)
     {
-        Operacoes(matriz1, matriz2, linhas, colunas, escolha);
-        Console.WriteLine("\nDigite qualquer tecla para continuar...");
+        DoOperations(matrix1, matrix2, lines, columns, option);
+        Console.Write("\nPress any key to continue...");
         Console.ReadKey();
     }
 
-} while (escolha != 0);
+} while (option != 0);
