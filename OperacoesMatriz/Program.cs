@@ -43,7 +43,7 @@ void SortMatrix(float[,] matrix, int lines, int columns)
     }
 }
 
-void PrintMatrix(float[,] matrix, string title, int lines, int columns)
+void PrintMatrix(float[,] matrix, int lines, int columns, string title)
 {
     PrintLine();
     Console.WriteLine(title);
@@ -109,7 +109,7 @@ void DoOperations(float[,] m1, float[,] m2, int lines, int columns, int option)
             break;
     }
 
-    PrintMatrix(result, title, lines, columns);
+    PrintMatrix(result, lines, columns, title);
 }
 
 int ReadInt(string title)
@@ -129,29 +129,21 @@ float[,] CreateMatrix(int linhas, int colunas)
 }
 
 /*----------Main----------*/
-int option, lines, columns;
+int option, lines = 3, columns = 3;
 
 do
 {
     Console.Clear();
     Console.WriteLine("=====Manipulating Matrixes=====");
 
-    do
-    {
-        PrintLine();
-        lines = ReadInt("Enter line size: ");
-        columns = ReadInt("Enter columns size: ");
-
-    } while (lines <= 0 && columns <= 0 || lines != columns);
-
     float[,] matrix1 = CreateMatrix(lines, columns);
     float[,] matrix2 = CreateMatrix(lines, columns);
 
     SortMatrix(matrix1, lines, columns);
-    PrintMatrix(matrix1, "Matrix 1:", lines, columns);
+    PrintMatrix(matrix1, lines, columns, "Matrix 1:");
 
     SortMatrix(matrix2, lines, columns);
-    PrintMatrix(matrix2, "Matrix 2:", lines, columns);
+    PrintMatrix(matrix2, lines, columns, "Matrix 2:");
 
     option = Menu();
 
