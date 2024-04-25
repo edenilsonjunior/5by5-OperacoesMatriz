@@ -129,12 +129,20 @@ float[,] CreateMatrix(int linhas, int colunas)
 }
 
 /*----------Main----------*/
-int option, lines = 3, columns = 3;
+int option, lines, columns;
 
 do
 {
     Console.Clear();
     Console.WriteLine("=====Manipulating Matrixes=====");
+
+    do
+    {
+        PrintLine();
+        lines = ReadInt("Enter line size: ");
+        columns = ReadInt("Enter columns size: ");
+
+    } while (lines <= 0 && columns <= 0 || lines != columns);
 
     float[,] matrix1 = CreateMatrix(lines, columns);
     float[,] matrix2 = CreateMatrix(lines, columns);
